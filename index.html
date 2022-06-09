@@ -1,0 +1,136 @@
+<script>
+   let player_robot_name= prompt("enter robot's name:- ");
+   if(localStorage.getItem('last_player_details')){
+       console.log("last player details = ",JSON.parse(localStorage.getItem('last_player_details')))
+   }
+   function start_game(){
+           location.reload();
+       }
+   if(player_robot_name){
+    var player_robot = {
+            name : player_robot_name,
+            health_points: 100,
+            attack_points:10,
+            money_points:10,
+            opponents_killed: 0
+        }
+        var opponent_robots = [
+            {
+            name: "Robo 1",
+            health_points:50,
+            attack_points:12
+            },
+            {
+            name: "Robo 2",
+            health_points:50,
+            attack_points:12
+            },
+            {
+            name: "Robo 3",
+            health_points:50,
+            attack_points:12
+            },
+    ]
+       function display_robo_details(obj){
+           for(let prop in obj){
+               alert(prop+" = "+obj[prop]);
+           }
+       }
+       function fight(robot){
+            if(player_robot.health_points>0){
+                robot.health_points-=player_robot.attack_points;
+                alert("you attacked and decreased "+robot.name+" health points to "+robot.health_points+" !!!");
+            }
+            if(robot.health_points>0){
+                player_robot.health_points-=robot.attack_points;
+                alert("ohh no opponent attacked and decreased your health points to "+player_robot.health_points+" !!!");
+            }
+       }
+       
+       function end_game(){
+            alert("your stats:-");
+            display_robo_details(player_robot);
+            switch(prompt("enter 1 to start again or 2 to endgame")){
+                case '1':
+                    start_game();
+                    break;
+                default :
+                    localStorage.setItem('last_player_details',JSON.stringify(player_robot));
+                    alert("Ta Ta ..!!");
+            }
+       }
+       function shop(){
+           switch(prompt("1:Refill Health \n2.update attack power\n3.leave")){
+               case '1':
+                   player_robot.health_points = 100;
+                   player_robot.money_points-=10;
+                   alert("your Health Points refilled to "+player_robot.health_points);
+                   break;
+               case '2':
+                   
+                   player_robot.attack_points+=player_robot.money_points;
+                   player_robot.money_points-=10;
+                   alert("your Attack Points refilled to "+player_robot.attack_points);
+                   break;
+                case '3':
+                    alert("dont wanna shop...good bye..!!");
+                    break;
+                default:
+                    shop();
+
+           }
+       }
+        
+
+    alert("welcome to Robot Gladitors");
+        opponent_robots.every(robo=>{
+            
+            let wanna_fight =confirm("wanna fight with "+robo.name+" ?");
+            if(wanna_fight){
+                alert("your robo details:-");
+                display_robo_details(player_robot);
+                alert("opponent robo details:- ");
+                display_robo_details(robo);
+                fight_chk =true; 
+                while(fight_chk){
+                    fight(robo);
+                    (player_robot.health_points<=0||robo.health_points<=0)?(fight_chk = false):(fight_chk = true);
+
+                }
+                if(player_robot.health_points<=0){
+                    return false;
+                }
+                else{
+                    player_robot.opponents_killed++;
+                    if(player_robot.money_points>=10)
+                        shop();
+                    return true;
+                }
+            
+            }else if(player_robot.money_points>=10){
+                player_robot.money_points-=10;
+                alert("10 money points deducted from "+player_robot.name+" money points left "+player_robot.money_points);
+                //display_robo_details(player_robot);
+                return true;
+            }
+            else{
+                alert("you don't have enough money points to skip the robo..!!");
+                
+            }
+        })
+        if(player_robot.health_points>0){
+            alert("voilla "+player_robot.name+" won..!!");
+            end_game();
+        }
+        else{
+            alert(player_robot.name+" lose");
+            end_game();
+        }
+        
+        
+   }else{
+       alert("plz enter a name and click ok...!!!");
+       
+   }
+
+</script>
