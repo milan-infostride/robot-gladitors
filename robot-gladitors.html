@@ -1,0 +1,30 @@
+<script>
+   let player_robot_name= prompt("enter robot's name:- ");
+   if(player_robot_name){
+        var player_robot = {
+            name : player_robot_name,
+            hp: 100,
+            ap:10,
+            mp:10
+        }
+        var opponent_robot = {
+            name: "Roborto",
+            hp:50,
+            ap:12
+        }
+        let wanna_fight =confirm("welcome to Robot Gladitors \n wanna fight with "+opponent_robot.name+" ?");
+        if(wanna_fight){
+            
+            opponent_robot.hp-=player_robot.ap;
+            alert("you attacked and dicreased opponents health points to "+opponent_robot.hp+" !!!");
+            player_robot.hp-=opponent_robot.ap;
+            alert("ohh no opponent attacked and dicreased your health points to "+player_robot.hp+" !!!");
+        }else{
+            alert("10 money points detucted from "+player_robot.name);
+        }
+        
+   }else{
+       alert("plz enter a name and click ok...!!!");
+   }
+
+</script>
