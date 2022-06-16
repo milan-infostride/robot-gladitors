@@ -32,9 +32,11 @@
             },
     ]
        function display_robo_details(obj){
+        let str = "";
            for(let prop in obj){
-               alert(prop+" = "+obj[prop]);
+                str += prop.replaceAll('_',' ') + " = " + obj[prop] + "\n";
            }
+           alert(str);
        }
        function fight(robot){
             if(player_robot.health_points>0){
@@ -83,41 +85,45 @@
         
 
     alert("welcome to Robot Gladitors");
-        opponent_robots.every(robo=>{
-            
-            let wanna_fight =confirm("wanna fight with "+robo.name+" ?");
+        for(let i=0;i<opponent_robots.length;){
+            alert("your robo details:-");
+            display_robo_details(player_robot);
+            alert("opponent robo details:- ");
+            display_robo_details(opponent_robots[i]);
+            let wanna_fight =confirm("wanna fight with "+opponent_robots[i].name+" ?");
             if(wanna_fight){
-                alert("your robo details:-");
-                display_robo_details(player_robot);
-                alert("opponent robo details:- ");
-                display_robo_details(robo);
+                
+                // alert("opponent robo details:- ");
+                // display_robo_details(opponent_robots[i]);
                 fight_chk =true; 
                 while(fight_chk){
-                    fight(robo);
-                    (player_robot.health_points<=0||robo.health_points<=0)?(fight_chk = false):(fight_chk = true);
+                    fight(opponent_robots[i]);
+                    (player_robot.health_points<=0||opponent_robots[i].health_points<=0)?(fight_chk = false):(fight_chk = true);
 
                 }
                 if(player_robot.health_points<=0){
-                    return false;
+                    break;
                 }
                 else{
                     player_robot.opponents_killed++;
                     if(player_robot.money_points>=10)
                         shop();
-                    return true;
+                    i++;
+                
                 }
             
             }else if(player_robot.money_points>=10){
                 player_robot.money_points-=10;
                 alert("10 money points deducted from "+player_robot.name+" money points left "+player_robot.money_points);
+                i++;
                 //display_robo_details(player_robot);
-                return true;
+                
             }
             else{
                 alert("you don't have enough money points to skip the robo..!!");
                 
             }
-        })
+        }
         if(player_robot.health_points>0){
             alert("voilla "+player_robot.name+" won..!!");
             end_game();
